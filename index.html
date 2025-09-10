@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ziqichen R Simple Tutorial - 课程大纲</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            text-align: center;
+            background-color: #007acc;
+            color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        nav {
+            background-color: #333;
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+        }
+        section {
+            background-color: white;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #007acc;
+        }
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+        code {
+            background-color: #f1f1f1;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Ziqichen R Simple Tutorial</h1>
+        <p>我的 R 语言课程大纲 - 简单易懂的入门教程</p>
+    </header>
+    
+    <nav>
+        <a href="#intro">简介</a>
+        <a href="#outline">课程大纲</a>
+        <a href="#resources">资源</a>
+    </nav>
+    
+    <section id="intro">
+        <h2>课程简介</h2>
+        <p>欢迎来到我的 R 语言简单教程！这个网站提供 R 编程的基础知识和课程大纲，帮助初学者快速上手数据分析和统计建模。</p>
+        <p>R 是一种强大的开源编程语言，广泛用于统计学、数据科学和可视化。</p>
+    </section>
+    
+    <section id="outline">
+        <h2>课程大纲</h2>
+        <ol>
+            <li><strong>第 1 章：R 基础</strong>
+                <ul>
+                    <li>R 的安装和环境设置</li>
+                    <li>基本数据类型（向量、矩阵、数据框）</li>
+                    <li>变量赋值和基本运算</li>
+                </ul>
+            </li>
+            <li><strong>第 2 章：数据导入与清洗</strong>
+                <ul>
+                    <li>读取 CSV、Excel 等文件（使用 readr 或 readxl 包）</li>
+                    <li>数据清洗：缺失值处理、去重</li>
+                    <li>数据转换：dplyr 包的基本函数（filter, select, mutate）</li>
+                </ul>
+            </li>
+            <li><strong>第 3 章：数据可视化</strong>
+                <ul>
+                    <li>基础绘图：plot() 和 hist()</li>
+                    <li>ggplot2 包：创建美观的图表（散点图、柱状图、直方图）</li>
+                    <li>自定义主题和标签</li>
+                </ul>
+            </li>
+            <li><strong>第 4 章：统计分析</strong>
+                <ul>
+                    <li>描述性统计：mean(), sd(), summary()</li>
+                    <li>假设检验：t.test(), chi-square</li>
+                    <li>线性回归：lm() 函数</li>
+                </ul>
+            </li>
+            <li><strong>第 5 章：高级主题</strong>
+                <ul>
+                    <li>循环和函数编写</li>
+                    <li>包管理：install.packages() 和 library()</li>
+                    <li>项目实践：简单的数据分析案例</li>
+                </ul>
+            </li>
+        </ol>
+        <p>每个章节包含代码示例、练习题和参考资料。建议结合 RStudio 使用。</p>
+    </section>
+    
+    <section id="resources">
+        <h2>学习资源</h2>
+        <ul>
+            <li><a href="https://www.r-project.org/">R 官方网站</a></li>
+            <li><a href="https://cran.r-project.org/">CRAN 包库</a></li>
+            <li><a href="https://rstudio.com/">RStudio IDE</a></li>
+            <li>推荐书籍：《R for Data Science》 by Hadley Wickham</li>
+        </ul>
+        <p>代码示例：<code>install.packages("ggplot2"); library(ggplot2)</code></p>
+    </section>
+    
+    <footer>
+        <p>&copy; 2025 Ziqichen. 所有权利保留。</p>
+    </footer>
+</body>
+</html>
