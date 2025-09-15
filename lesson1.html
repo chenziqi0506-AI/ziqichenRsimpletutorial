@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第 1 课：认识 R - Ziqichen R Simple Tutorial</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            text-align: center;
+            background-color: #007acc;
+            color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        nav {
+            background-color: #333;
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+        }
+        section {
+            background-color: white;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #007acc;
+        }
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+        code {
+            background-color: #f1f1f1;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+        pre {
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>第 1 课：认识 R</h1>
+        <p>日期：2025 年 9 月 17 日 | 时长：20-30 分钟</p>
+    </header>
+    
+    <nav>
+        <a href="index.html">首页</a>
+        <a href="lesson2.html">第 2 课</a>
+        <a href="lesson3.html">第 3 课</a>
+        <a href="lesson4.html">第 4 课</a>
+        <a href="lesson5.html">第 5 课</a>
+    </nav>
+    
+    <section>
+        <h2>课程目标</h2>
+        <p>本课程介绍 R 编程语言的基础知识，包括安装 R 和 RStudio、常用 R 包的安装、R 的简介以及 tibble 数据结构的初步理解。适合 R 语言初学者。</p>
+    </section>
+    
+    <section>
+        <h2>1. 下载 R 和 RStudio</h2>
+        <p>要开始使用 R，你需要安装 R 语言和 RStudio（一个强大的 R 集成开发环境）。</p>
+        <ul>
+            <li><strong>R 语言</strong>：从官方 CRAN 网站下载最新版本，适用于 Windows、Mac 或 Linux。
+                <ul>
+                    <li><a href="https://www.r-project.org/">下载 R（R 官方网站）</a></li>
+                </ul>
+            </li>
+            <li><strong>RStudio</strong>：推荐使用 RStudio Desktop（免费版），提供友好的界面和工具。
+                <ul>
+                    <li><a href="https://posit.co/download/rstudio-desktop/">下载 RStudio</a></li>
+                </ul>
+            </li>
+        </ul>
+        <p><strong>安装步骤</strong>：先安装 R，再安装 RStudio。按默认设置安装即可，安装后打开 RStudio 确认环境正常。</p>
+    </section>
+    
+    <section>
+        <h2>2. 下载和安装 R 包</h2>
+        <p>我们将安装两个关键 R 包：tidyverse（数据处理和分析工具集）和 stats（R 内置统计分析包）。</p>
+        <pre><code>install.packages("tidyverse")
+install.packages("stats")  # 通常已内置，但确保安装
+library(tidyverse)
+library(stats)
+</code></pre>
+        <p><strong>说明</strong>：在 RStudio 的 Console 中运行以上代码。`tidyverse` 包含 dplyr、ggplot2 等常用包，`stats` 提供基础统计函数。</p>
+    </section>
+    
+    <section>
+        <h2>3. R 简介</h2>
+        <p>（此处留空供你编写 R 的历史、优势及劣势内容。建议包括 R 的起源、主要应用领域、与其他语言如 Python 的比较等。）</p>
+        <p><em>待补充内容...</em></p>
+    </section>
+    
+    <section>
+        <h2>4. Tibble 数据简介</h2>
+        <p>在浩如烟海的数据类型中，有一种数据类型特别为统计学家所关注。这一类数据有如下特点：</p>
+        <ul>
+            <li>每行是一个个案（case）、个体（individual）、观测点（observation）、分析单位（unit of analysis）。统计上讲，这些概念等价。</li>
+            <li>每列是一个变量（variable）、特征（feature）。</li>
+            <li>每格是一个取值（value），即某个个案的某条特征。</li>
+        </ul>
+        <p>这一类数据，有一种说法是整洁数据（tidy data），和其他五花八门的杂乱数据（messy data）相对。整洁数据的结构非常清晰，通过行和列，可以锁定每个格子数值的含义。</p>
+        <p><strong>整洁数据的示例</strong>：</p>
+        <pre><code># 示例：一个整洁数据集（tibble 格式）
+library(tidyverse)
+data <- tibble(
+  Name = c("Alice", "Bob", "Charlie"),
+  Age = c(25, 30, 35),
+  Score = c(90, 85, 88)
+)
+print(data)
+</code></pre>
+        <p>运行以上代码，你会看到一个整洁的数据框，每行是一个人，每列是一个变量（姓名、年龄、分数）。我们将在后续课程中深入探讨如何操作此类数据。</p>
+    </section>
+    
+    <footer>
+        <p>&copy; 2025 Ziqichen. 所有权利保留。</p>
+    </footer>
+</body>
+</html>
