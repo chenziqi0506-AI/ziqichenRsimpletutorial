@@ -232,15 +232,6 @@ head(diamonds_clean)
             </li>
             <li>组合：如 <code>c(x1, starts_with("a"), last_col(2))</code>：选取 x1、以 a 开头的变量、最后两个变量</li>
         </ul>
-        <p><strong>示例</strong>：选取和修改 diamonds 数据集变量。</p>
-        <pre><code>library(dplyr)
-diamonds_modified <- diamonds %>%
-  select(carat, cut, price, starts_with("c")) %>%
-  mutate(price_per_carat = price / carat,
-         carat_group = cut_quantile(carat, 5))
-head(diamonds_modified)
-</code></pre>
-    </section>
     
     <section>
         <h2>5. 分析 diamonds 数据集</h2>
