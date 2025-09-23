@@ -232,15 +232,6 @@ head(diamonds_clean)
             </li>
             <li>组合：如 <code>c(x1, starts_with("a"), last_col(2))</code>：选取 x1、以 a 开头的变量、最后两个变量</li>
         </ul>
-        <h3>data-masking 修改变量</h3>
-        <p>所有改变量的函数通用，支持以下方法：</p>
-        <ul>
-            <li><code>z = x + y</code>：将 x + y 的结果赋给 z</li>
-            <li><code>x = na_if_value(x, 1)</code> 和 <code>x = value_if_na(x, 1)</code>：缺失值转换</li>
-            <li><code>x_5g = cut_quantile(x, 5)</code>：切分变量</li>
-            <li><code>x = ifelse(x1 == 1, x2, x3+x4)</code>：条件语句</li>
-            <li><code>x = case_when(...)</code>：多重条件语句</li>
-        </ul>
         <p><strong>示例</strong>：选取和修改 diamonds 数据集变量。</p>
         <pre><code>library(dplyr)
 diamonds_modified <- diamonds %>%
