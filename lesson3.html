@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第 3 课：统计数据 - Ziqichen R Simple Tutorial</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            text-align: center;
+            background-color: #007acc;
+            color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        nav {
+            background-color: #333;
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+        }
+        section {
+            background-color: white;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #007acc;
+        }
+        h3 {
+            color: #005f99;
+        }
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+        code {
+            background-color: #f1f1f1;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+        pre {
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>第 3 课：统计数据</h1>
+        <p>日期：2025 年 10 月 15 日 | 时长：20-30 分钟</p>
+    </header>
+    
+    <nav>
+        <a href="index.html">首页</a>
+        <a href="lesson1.html">第 1 课</a>
+        <a href="lesson2.html">第 2 课</a>
+        <a href="lesson4.html">第 4 课</a>
+        <a href="lesson5.html">第 5 课</a>
+    </nav>
+    
+    <section>
+        <h2>课程目标</h2>
+        <p>本课程深入探讨 dplyr 包的统计功能，包括选取或删除变量/个案、更改或新建变量/个案、统计分析、分组统计和数据合并。本课程使用 diamonds 数据集，<a href="lesson1/diamonds.csv">点此下载</a>。</p>
+    </section>
+    
+    <section>
+        <h2>1. dplyr 选取或删除</h2>
+        <p>我删除了你的微信，本质上是保留了除了你以外所有人的微信。所以删除的本质就是选取。因此，在 tidyverse 里面，选取函数兼具了“保留”（选取）和“删除”的功能。</p>
+        <h3>列命令（选变量）</h3>
+        <ul>
+            <li><code>select()</code>：根据位置或名称选取列</li>
+            <li><code>pull()</code>：根据位置或名称抽取一列，输出矢量格式（进阶技巧）</li>
+        </ul>
+        <h3>行命令（选个案）</h3>
+        <ul>
+            <li><code>head()</code> 和 <code>tail()</code>：抽取数据的开头或结尾几行</li>
+            <li><code>slice()</code>：根据位置抽取行</li>
+            <li><code>filter()</code>：根据变量取值抽取行</li>
+            <li><code>slice_sample()</code>：随机抽取若干行（进阶技巧）</li>
+            <li><code>slice_headtail()</code> 和 <code>slice_interval()</code>：根据位置抽取特定行</li>
+            <li><code>distinct()</code>：去重，保留不重复的个案（进阶技巧）</li>
+        </ul>
+        <p><strong>示例</strong>：从 diamonds 数据集选取变量和行。</p>
+        <pre><code>library(dplyr)
+diamonds_subset <- diamonds %>%
+  select(carat, cut, price) %>%
+  filter(carat > 1) %>%
+  slice_head(n = 5)
+diamonds_vector <- diamonds %>% pull(price)
+</code></pre>
+    </section>
+    
+    <section>
+        <h2>2. dplyr 更改或新建</h2>
+        <p>当你添加一个手机号到通讯录，手机会问你是“新建联系人”还是“添加到已有联系人”。这是两个不同的操作。不过，dplyr 的 <code>mutate()</code> 函数，将它们合二为一了。</p>
+        <h3>更改变量名</h3>
+        <ul>
+            <li><code>rename()</code>：重命名</li>
+            <li><code>rename_with()</code>：批量重命名（进阶技巧）</li>
+        </ul>
+        <h3>更改或新建列（变量）</h3>
+        <ul>
+            <li><code>mutate()</code>：更改、新建变量</li>
+            <li><code>fill()</code>：就近填充缺失值（进阶技巧）</li>
+            <li><code>replace_na()</code>：批量替换缺失值（进阶技巧）</li>
+            <li><code>rownames_to_column()</code>：复制行名称为变量（进阶技巧）</li>
+            <li><code>add_count()</code>：添加变量频数为新变量（进阶技巧）</li>
+            <li><code>unite()</code>：合并多个变量为一个（进阶技巧）</li>
+            <li><code>separate()</code>：拆分一个变量为多个（进阶技巧）</li>
+            <li><code>add_column()</code>：手动添加变量（几乎不用）</li>
+        </ul>
+        <h3>更改或新建行（个案）</h3>
+        <ul>
+            <li><code>expand()</code> 和 <code>complete()</code>：根据变量取值的组合扩充个案（进阶技巧）</li>
+            <li><code>add_row()</code>：手动添加个案（几乎不用）</li>
+        </ul>
+        <p><strong>示例</strong>：更改和新建 diamonds 数据集变量。</p>
+        <pre><code>library(dplyr)
+diamonds_modified <- diamonds %>%
+  rename(weight = carat) %>%
+  mutate(price_per_carat = price / weight,
+         high_price = ifelse(price > 10000, "High", "Low"))
+</code></pre>
+    </section>
+    
+    <section>
+        <h2>3. dplyr 统计</h2>
+        <h3>类别变量</h3>
+        <ul>
+            <li><code>count()</code>：计算各类别数量</li>
+            <li><code>tab()</code>：计算各类别数量、百分比、累计百分比</li>
+            <li><code>tab1()</code>：同时列出多个变量的上述统计量</li>
+        </ul>
+        <h3>连续变量</h3>
+        <ul>
+            <li><code>summarise()</code>：统计个别统计量</li>
+            <li><code>summ()</code>：快速生成大量变量的多个统计量</li>
+        </ul>
+        <p><strong>示例</strong>：统计 diamonds 数据集。</p>
+        <pre><code>library(dplyr)
+diamonds_stats <- diamonds %>%
+  count(cut) %>%
+  mutate(pct = n / sum(n) * 100)
+diamonds_summary <- diamonds %>%
+  summarise(mean_price = mean(price, na.rm = TRUE),
+            max_carat = max(carat, na.rm = TRUE))
+</code></pre>
+    </section>
+    
+    <section>
+        <h2>4. dplyr 分组</h2>
+        <p>分组可以做很多事情，但最常用的，肯定还是分组统计。</p>
+        <ul>
+            <li><code>.by</code>：在函数中分组</li>
+            <li><code>summarise(..., .by)</code>：统计个别统计量</li>
+            <li><code>summ(..., .by)</code>：快速生成大量变量的多个统计量</li>
+            <li><code>mutate(..., .by)</code>：根据分组统计量更改或新建变量</li>
+            <li><code>group_by()</code>：在函数前构造分组数据</li>
+            <li><code>ungroup()</code>：取消数据分组</li>
+        </ul>
+        <p><strong>示例</strong>：分组统计 diamonds 数据集。</p>
+        <pre><code>library(dplyr)
+diamonds_grouped <- diamonds %>%
+  group_by(cut) %>%
+  summarise(mean_price = mean(price, na.rm = TRUE),
+            count = n()) %>%
+  ungroup()
+diamonds_by <- diamonds %>%
+  summarise(mean_price = mean(price, na.rm = TRUE), .by = cut)
+</code></pre>
+    </section>
+    
+    <section>
+        <h2>5. dplyr 合并</h2>
+        <h3>上下合并</h3>
+        <ul>
+            <li><code>bind_rows()</code>：根据位置垂直拼接</li>
+        </ul>
+        <h3>左右合并</h3>
+        <ul>
+            <li><code>bind_cols()</code>：根据位置水平拼接</li>
+            <li><code>left_join()</code>：根据 ID 变量匹配，只保留前一个数据的个案</li>
+            <li><code>right_join()</code>：根据 ID 变量匹配，只保留后一个数据的个案</li>
+            <li><code>full_join()</code>：根据 ID 变量匹配，保留前后数据的所有个案</li>
+            <li><code>inner_join()</code>：根据 ID 变量匹配，保留前后数据的共同个案</li>
+        </ul>
+        <h3>假装合并，实为筛选（删除）</h3>
+        <ul>
+            <li><code>semi_join()</code>：根据 ID 变量匹配，筛选前一个数据中与后一个数据的共同个案</li>
+            <li><code>anti_join()</code>：根据 ID 变量匹配，删除前一个数据中与后一个数据的共同个案</li>
+        </ul>
+        <p><strong>示例</strong>：合并 diamonds 子集。</p>
+        <pre><code>library(dplyr)
+diamonds_subset1 <- diamonds %>% slice_head(n = 10)
+diamonds_subset2 <- diamonds %>% slice(5:15)
+diamonds_joined <- diamonds_subset1 %>%
+  left_join(diamonds_subset2, by = c("carat", "cut", "color"))
+</code></pre>
+    </section>
+    
+    <section>
+        <h2>6. 分析 diamonds 数据集</h2>
+        <p>通过 diamonds 数据集实践数据统计技能。数据集包含钻石的克拉数、切工、价格等信息，可用于练习选取、更改、统计、分组和合并操作。</p>
+        <p><strong>资源</strong>：</p>
+        <ul>
+            <li><a href="lesson1/diamonds.csv">下载 diamonds 数据集 (CSV)</a></li>
+            <li><a href="lesson3/code/data_stats.R">下载数据统计 R 代码</a></li>
+        </ul>
+    </section>
+    
+    <footer>
+        <p>&copy; 2025 Ziqichen. 所有权利保留。</p>
+    </footer>
+</body>
+</html>
