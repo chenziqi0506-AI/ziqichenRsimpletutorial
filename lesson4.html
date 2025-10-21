@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第 4 课：回归与统计分析 - Ziqichen R Simple Tutorial</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            text-align: center;
+            background-color: #007acc;
+            color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        nav {
+            background-color: #333;
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+        }
+        section {
+            background-color: white;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #007acc;
+        }
+        h3 {
+            color: #005f99;
+        }
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 10px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        code {
+            background-color: #f1f1f1;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+        pre {
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>第 4 课：回归与统计分析</h1>
+        <p>日期：2025 年 10 月 22 日 | 时长：20-30 分钟</p>
+    </header>
+    
+    <nav>
+        <a href="index.html">首页</a>
+        <a href="lesson1.html">第 1 课</a>
+        <a href="lesson2.html">第 2 课</a>
+        <a href="lesson3.html">第 3 课</a>
+        <a href="lesson5.html">第 5 课</a>
+    </nav>
+    
+    <section>
+        <h2>课程目标</h2>
+        <p>本课程介绍 R 中的 Tidy 统计分析（包括方差分析、t 检验、卡方检验）和线性回归，涵盖数据导入、缺失值检查、变量统计和模型构建。本课程使用 wages 数据集（收入、身高、教育水平等）进行回归分析，ToothGrowth 和 mtcars 数据集进行统计分析。wages 数据集下载：<a href="lesson4/data/wages.csv">点此下载</a>。</p>
+    </section>
+    
+    <section>
+        <h2>1. Tidy 统计分析</h2>
+        <p>Tidy 统计分析利用 tidyverse 工具进行方差分析（ANOVA）、t 检验和卡方检验，根据变量类型和组别数量选择合适方法。</p>
+        <table>
+            <tr>
+                <th>X 变量类型</th>
+                <th>X 组别数量</th>
+                <th>Y 变量类型</th>
+                <th>分析方法</th>
+                <th>R 语法</th>
+            </tr>
+            <tr>
+                <td>定类</td>
+                <td>2 组或多组</td>
+                <td>定量</td>
+                <td>方差分析</td>
+                <td><code>aov()</code></td>
+            </tr>
+            <tr>
+                <td>定类</td>
+                <td>仅 2 组</td>
+                <td>定量</td>
+                <td>t 检验</td>
+                <td><code>t.test()</code></td>
+            </tr>
+            <tr>
+                <td>定类</td>
+                <td>2 组或多组</td>
+                <td>定类</td>
+                <td>卡方检验</td>
+                <td><code>chisq.test()</code></td>
+            </tr>
+        </table>
+        <h3>1.1 单因素方差分析</h3>
+        <p>当解释变量（X）只有一个时，称为单因素方差分析。以下使用 wages 数据集分析性别对收入的影响。</p>
+        <pre><code>library(dplyr)
+library(broom)
+wages <- read_csv("lesson4/data/wages.csv")
+# t 检验
+t.test(earn ~ sex, data = wages)
+# 线性模型
+lm(earn ~ sex, data = wages) %>% summary()
+# ANOVA
+aov(earn ~ sex, data = wages) %>% summary()
+</code></pre>
+        <h3>1.2 双因素方差分析</h3>
+        <p>当有两个解释变量时，称为双因素方差分析。使用 ggpubr 包的 ToothGrowth 数据集，包含 60 个样本，记录豚鼠在不同喂食方法（supp: 橙汁或维生素 C）和剂量（dose: 0.5、1、2 mg）下的牙齿长度（len）。</p>
+        <pre><code>library(ggpubr)
+library(dplyr)
+library(broom)
+my_data <- ToothGrowth %>%
+  mutate(across(c(supp, dose), ~ as_factor(.x)))
+head(my_data)
+# 双因素 ANOVA
+aov(len ~ supp + dose, data = my_data) %>% broom::tidy()
+# 多重比较
+aov(len ~ supp + dose, data = my_data) %>%
+  TukeyHSD(which = "dose") %>% broom::tidy()
+aov(len ~ supp + dose, data = my_data) %>%
+  TukeyHSD(which = "supp") %>% broom::tidy()
+# 检查交互效应
+aov(len ~ supp * dose, data = my_data) %>% broom::tidy()
+</code></pre>
+        <h3>1.3 tidyverse 中的应用</h3>
+        <p>结合 tidyverse 进行分组统计分析，例如对 mtcars 数据集按气缸数（cyl）分组，分析齿轮数（gear）对油耗（mpg）的影响。</p>
+        <pre><code>library(dplyr)
+library(broom)
+mtcars %>%
+  group_by(cyl) %>%
+  summarise(
+    broom::tidy(aov(mpg ~ gear, data = cur_data())),
+    .groups = "keep"
+  ) %>%
+  select(term, statistic, p.value) %>%
+  filter(term != "Residuals") %>%
+  arrange(p.value)
+</code></pre>
+        <h3>1.4 ggpubr 高级分析</h3>
+        <p>使用 ggpubr 的 <code>anova_test()</code> 进行单因素、双因素和重复测量 ANOVA。</p>
+        <pre><code>library(ggpubr)
+# 单因素 ANOVA
+my_data %>% anova_test(len ~ dose)
+# 双因素 ANOVA
+my_data %>% anova_test(len ~ supp * dose)
+# 双因素重复测量 ANOVA
+my_data %>%
+  mutate(id = rep(1:10, 6)) %>%
+  anova_test(dv = len, wid = id, within = c(supp, dose))
+</code></pre>
+    </section>
+    
+    <section>
+        <h2>2. 线性回归</h2>
+        <p>本节使用 1994 年收集的 wages 数据集（1379 个观测，包含收入、身高、教育水平等信息）进行线性回归分析，探索变量之间的关系。</p>
+        <h3>2.1 数据导入</h3>
+        <p>从本地导入 wages 数据集。</p>
+        <pre><code>library(readr)
+wages <- read_csv("lesson4/data/wages.csv")
+head(wages)
+</code></pre>
+        <h3>2.2 缺失值检查</h3>
+        <p>拿到数据后，先了解变量含义并检查缺失值。wages 数据集的变量包括：</p>
+        <pre><code>wages %>% colnames()
+# 输出: "earn" "height" "sex" "race" "ed" "age"
+</code></pre>
+        <p>检查缺失值：</p>
+        <pre><code>wages %>%
+  summarise_all(~ sum(is.na(.)))
+</code></pre>
+        <h3>2.3 变量简单统计</h3>
+        <p>探索变量分布，例如男女数量、身高和收入均值。</p>
+        <pre><code># 男女数量
+wages %>% count(sex)
+# 按性别分组的身高和收入均值
+wages %>%
+  group_by(sex) %>%
+  summarise(
+    n = n(),
+    mean_height = mean(height),
+    mean_earn = mean(earn)
+  )
+</code></pre>
+        <p>提出问题供探索：</p>
+        <ul>
+            <li>身高越高的人是否挣钱越多？</li>
+            <li>男性是否比女性挣得多？</li>
+            <li>影响收入最大的变量是哪个？</li>
+            <li>如何判定模型是否良好？</li>
+        </ul>
+        <h3>2.4 使用 lm() 函数</h3>
+        <p><code>lm()</code> 是线性回归的核心函数，常用参数包括：</p>
+        <ul>
+            <li><code>formula</code>：指定模型，如 <code>y ~ x</code>，表示 y 由 x 预测。</li>
+            <li><code>data</code>：数据框，包含响应变量和解释变量。</li>
+        </ul>
+        <p><strong>示例</strong>：用身高预测收入。</p>
+        <pre><code>mod1 <- lm(earn ~ height, data = wages)
+names(mod1)
+print(mod1)
+summary(mod1)
+# 查看拟合值
+wages %>% modelr::add_predictions(mod1)
+# 查看残差
+wages %>%
+  modelr::add_predictions(mod1) %>%
+  modelr::add_residuals(mod1)
+</code></pre>
+        <h3>2.5 多元线性回归</h3>
+        <p>扩展到多个预测变量，例如身高和教育水平。</p>
+        <pre><code>mod2 <- lm(earn ~ height + ed, data = wages)
+print(mod2)
+summary(mod2)
+</code></pre>
+        <h3>2.6 变量重要性</h3>
+        <p>评估哪个变量对收入影响最大。两种方法：</p>
+        <ul>
+            <li><strong>标准化系数</strong>：将变量标准化后比较系数绝对值。</li>
+            <li><strong>t 统计量</strong>：通过 <code>caret::varImp()</code> 比较 t 值绝对值。</li>
+        </ul>
+        <pre><code>library(dplyr)
+library(caret)
+fit <- wages %>%
+  mutate_at(vars(earn, height, ed, age), scale) %>%
+  lm(earn ~ 1 + height + ed + age, data = .)
+summary(fit)
+caret::varImp(fit)
+</code></pre>
+    </section>
+    
+    <section>
+        <h2>3. 分析 wages 数据集</h2>
+        <p>通过 wages 数据集实践线性回归，结合 ToothGrowth 和 mtcars 数据集实践 Tidy 统计分析。wages 数据集包含收入、身高、教育水平等信息，下载：<a href="lesson4/data/wages.csv">wages.csv</a>。</p>
+        <p><strong>资源</strong>：</p>
+        <ul>
+            <li><a href="lesson4/wages.csv">下载 wages 数据集 (CSV)</a></li>
+            <li><a href="lesson4/lesson4.R">下载回归与统计分析 R 代码</a></li>
+        </ul>
+    </section>
+    
+    <footer>
+        <p>&copy; 2025 Ziqichen. 所有权利保留。</p>
+    </footer>
+</body>
+</html>
