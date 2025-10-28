@@ -74,3 +74,26 @@ ggplot(data = wages, mapping = aes(x = age, y = earn, alpha = sex)) +
 #也可以有更多映射
 ggplot(data = wages, mapping = aes(x = age, y = earn, color = sex, shape = race)) + geom_point() + 
   xlab("Age") + ylab("Earnings") + ggtitle("Age vs Earnings grouped by sex and race")
+
+#绘制平滑曲线
+ggplot(data = wages, mapping = aes(x = age, y = earn)) + 
+  geom_smooth() + xlab("Age") + ylab("Earnings") + ggtitle("Smoothed Age vs Earnings")
+#绘制平滑曲线，并按性别分组
+ggplot(data = wages, mapping = aes(x = age, y = earn, color = sex)) +
+  geom_smooth() + xlab("Age") + ylab("Earnings") + ggtitle("Smoothed Age vs Earnings")
+#同时绘制散点图和平滑曲线
+ggplot(wages) + geom_point(mapping = aes(x = age, y = earn)) + 
+  geom_smooth(mapping = aes(x = age, y = earn)) + xlab("Age") + ylab("Earnings") + ggtitle("Age vs Earnings with Smoothed Line")
+ggplot(wages, mapping = aes(x = age, y = earn)) + 
+  geom_point() + geom_smooth() + xlab("Age") + ylab("Earnings") + ggtitle("Age vs Earnings with Smoothed Line")
+#保存图片
+ggsave("age_earnings_plot.png")
+ggsave("age_earnings_plot.png", width = 8, height = 6, dpi = 300)
+
+
+#练习
+#1. 使用wages数据集，绘制年龄（age）与收入（earn）之间的散点图，并按性别（sex）着色。
+
+
+
+
